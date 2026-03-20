@@ -1,0 +1,10 @@
+{% extends "base.html" %} {% block content %}
+<h1>Staff Login</h1>
+<p>Sign in with an authorized staff account to access inventory management.</p>
+
+<form method="post" class="auth-form">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Sign In</button>
+  <input type="hidden" name="next" value="{{ next }}" />
+</form>
+{% endblock %}

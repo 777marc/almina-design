@@ -1,0 +1,148 @@
+[
+  {
+    "model": "store.category",
+    "pk": 1,
+    "fields": {
+      "name": "Medals & Decorations",
+      "slug": "medals-decorations"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 2,
+    "fields": {
+      "name": "Uniforms & Apparel",
+      "slug": "uniforms-apparel"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 3,
+    "fields": {
+      "name": "Field Gear",
+      "slug": "field-gear"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 4,
+    "fields": {
+      "name": "Insignia & Patches",
+      "slug": "insignia-patches"
+    }
+  },
+  {
+    "model": "store.memorabiliaitem",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "name": "Bronze Star Medal Display Set",
+      "slug": "bronze-star-medal-display-set",
+      "sku": "MED-001",
+      "era": "World War II",
+      "description": "Period Bronze Star medal presentation set with ribbon bar and lapel pin, mounted for display.",
+      "condition": "Very Good",
+      "unit_price": "245.00",
+      "quantity_in_stock": 2,
+      "image": null,
+      "is_active": true,
+      "created_at": "2026-03-20T12:00:00Z",
+      "updated_at": "2026-03-20T12:00:00Z"
+    }
+  },
+  {
+    "model": "store.memorabiliaitem",
+    "pk": 2,
+    "fields": {
+      "category": 2,
+      "name": "US Army Service Coat",
+      "slug": "us-army-service-coat",
+      "sku": "UNI-014",
+      "era": "Korean War",
+      "description": "Original olive drab service coat with intact shoulder insignia and brass buttons.",
+      "condition": "Good",
+      "unit_price": "310.00",
+      "quantity_in_stock": 1,
+      "image": null,
+      "is_active": true,
+      "created_at": "2026-03-20T12:00:00Z",
+      "updated_at": "2026-03-20T12:00:00Z"
+    }
+  },
+  {
+    "model": "store.memorabiliaitem",
+    "pk": 3,
+    "fields": {
+      "category": 3,
+      "name": "Canvas Field Map Case",
+      "slug": "canvas-field-map-case",
+      "sku": "GR-207",
+      "era": "Vietnam War",
+      "description": "Issued canvas field case suitable for maps and dispatch documents, with shoulder strap.",
+      "condition": "Service Worn",
+      "unit_price": "78.50",
+      "quantity_in_stock": 5,
+      "image": null,
+      "is_active": true,
+      "created_at": "2026-03-20T12:00:00Z",
+      "updated_at": "2026-03-20T12:00:00Z"
+    }
+  },
+  {
+    "model": "store.memorabiliaitem",
+    "pk": 4,
+    "fields": {
+      "category": 4,
+      "name": "Airborne Qualification Patch",
+      "slug": "airborne-qualification-patch",
+      "sku": "PAT-088",
+      "era": "Cold War",
+      "description": "Embroidered airborne patch sourced from a retired collection, suitable for framed display.",
+      "condition": "Excellent",
+      "unit_price": "34.99",
+      "quantity_in_stock": 8,
+      "image": null,
+      "is_active": true,
+      "created_at": "2026-03-20T12:00:00Z",
+      "updated_at": "2026-03-20T12:00:00Z"
+    }
+  },
+  {
+    "model": "store.memorabiliaitem",
+    "pk": 5,
+    "fields": {
+      "category": 1,
+      "name": "Campaign Ribbon Lot",
+      "slug": "campaign-ribbon-lot",
+      "sku": "MED-105",
+      "era": "World War II",
+      "description": "Mixed campaign ribbon lot featuring original stitched ribbon bars from multiple theaters.",
+      "condition": "Good",
+      "unit_price": "92.00",
+      "quantity_in_stock": 3,
+      "image": null,
+      "is_active": true,
+      "created_at": "2026-03-20T12:00:00Z",
+      "updated_at": "2026-03-20T12:00:00Z"
+    }
+  },
+  {
+    "model": "store.memorabiliaitem",
+    "pk": 6,
+    "fields": {
+      "category": 3,
+      "name": "Entrenching Tool Cover",
+      "slug": "entrenching-tool-cover",
+      "sku": "GR-318",
+      "era": "World War II",
+      "description": "Canvas entrenching tool cover with belt attachment points and original hardware.",
+      "condition": "Fair",
+      "unit_price": "49.50",
+      "quantity_in_stock": 4,
+      "image": null,
+      "is_active": true,
+      "created_at": "2026-03-20T12:00:00Z",
+      "updated_at": "2026-03-20T12:00:00Z"
+    }
+  }
+]

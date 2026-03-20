@@ -1,0 +1,63 @@
+{% extends "base.html" %} {% block content %}
+<h1>Checkout</h1>
+<div
+  style="
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  "
+>
+  <section>
+    <h2>Your Details</h2>
+    <form
+      method="post"
+      style="
+        background: var(--paper);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 1rem;
+      "
+    >
+      {% csrf_token %} {% for field in form %}
+      <div style="margin-bottom: 0.75rem">
+        <label style="display: block; font-weight: 600; margin-bottom: 0.25rem"
+          >{{ field.label }}</label
+        >
+        {{ field }} {% if field.errors %}
+        <p style="color: #8b2f1f; font-size: 0.85rem; margin-top: 0.2rem">
+          {{ field.errors.0 }}
+        </p>
+        {% endif %}
+      </div>
+      {% endfor %}
+      <button type="submit" style="margin-top: 0.5rem">Place Order</button>
+    </form>
+  </section>
+  <section class="panel">
+    <h2>Order Summary</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Qty</th>
+          <th>Subtotal</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in cart_items %}
+        <tr>
+          <td>{{ entry.item.name }}</td>
+          <td>{{ entry.quantity }}</td>
+          <td>${{ entry.subtotal }}</td>
+        </tr>
+        {% endfor %}
+        <tr style="border-top: 2px solid var(--border)">
+          <td colspan="2" style="text-align: right; font-weight: 700">Total</td>
+          <td style="font-weight: 700">${{ cart_total }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+{% endblock %}

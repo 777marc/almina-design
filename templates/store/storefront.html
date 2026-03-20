@@ -1,0 +1,56 @@
+{% extends "base.html" %} {% block content %}
+<h1>Military Memorabilia Catalog</h1>
+<p>Browse collectible patches, medals, uniforms, and historic field gear.</p>
+
+<div class="filter-bar">
+  <a href="/" class="tag {% if not active_category %}tag-active{% endif %}"
+    >All</a
+  >
+  {% for cat in categories %}
+  <a
+    href="/?category={{ cat.slug }}"
+    class="tag {% if active_category.slug == cat.slug %}tag-active{% endif %}"
+    >{{ cat.name }}</a
+  >
+  {% endfor %}
+</div>
+
+<div class="grid">
+  {% for item in items %}
+  <article class="item-card">
+    {% if item.image %}
+    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="item-img" />
+    {% else %}
+    <div class="item-img-placeholder"></div>
+    {% endif %}
+    <div class="tag">{{ item.category.name }}</div>
+    <h3 style="margin: 0.4rem 0 0.3rem">
+      <a
+        href="{{ item.get_absolute_url }}"
+        style="color: inherit; text-decoration: none"
+        >{{ item.name }}</a
+      >
+    </h3>
+    <p style="margin: 0 0 0.4rem; font-size: 0.9rem">
+      {{ item.description|truncatewords:16 }}
+    </p>
+    {% if item.era %}
+    <p style="margin: 0; font-size: 0.85rem">
+      <strong>Era:</strong> {{ item.era }}
+    </p>
+    {% endif %}
+    <p class="price">${{ item.unit_price }}</p>
+    <div class="card-actions">
+      <a href="{{ item.get_absolute_url }}" class="btn-outline">View</a>
+      <form method="post" action="{% url 'add_to_cart' item.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="/" />
+        <button type="submit">Add to Cart</button>
+      </form>
+    </div>
+  </article>
+  {% empty %}
+  <p class="panel">No active items are currently listed.</p>
+  {% endfor %}
+</div>
+{% endblock %}

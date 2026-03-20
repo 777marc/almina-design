@@ -1,0 +1,48 @@
+{% extends "base.html" %} {% block content %}
+<div class="panel" style="max-width: 640px">
+  <h1>Order Confirmed!</h1>
+  <p>
+    Thank you, <strong>{{ order.full_name }}</strong>! Your order
+    <strong>#{{ order.pk }}</strong> has been placed successfully.
+  </p>
+  <p>A confirmation will be sent to <strong>{{ order.email }}</strong>.</p>
+  <h3 style="margin-top: 1.25rem">Items Ordered</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Item</th>
+        <th>Qty</th>
+        <th>Unit Price</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for line in order.items.all %}
+      <tr>
+        <td>{{ line.item.name }}</td>
+        <td>{{ line.quantity }}</td>
+        <td>${{ line.unit_price }}</td>
+        <td>${{ line.get_subtotal }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p style="font-weight: 700; font-size: 1.1rem; margin-top: 0.75rem">
+    Order Total: ${{ order.get_total }}
+  </p>
+  <a
+    href="/"
+    style="
+      display: inline-block;
+      margin-top: 1rem;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.65rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 700;
+      text-decoration: none;
+    "
+    >Back to Store</a
+  >
+</div>
+{% endblock %}

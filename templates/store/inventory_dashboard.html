@@ -1,0 +1,53 @@
+{% extends "base.html" %} {% block content %}
+<h1>Inventory Dashboard</h1>
+<p>
+  This page is available to authenticated staff users. Use Django Admin for full
+  item editing.
+</p>
+<p><a href="/admin/store/memorabiliaitem/">Open Inventory in Admin</a></p>
+
+{% if low_stock %}
+<section class="panel">
+  <h2>Low Stock Alerts</h2>
+  <ul>
+    {% for item in low_stock %}
+    <li class="warning">
+      {{ item.name }} ({{ item.sku }}) - {{ item.quantity_in_stock }} left
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+{% endif %}
+
+<section class="panel" style="margin-top: 1rem">
+  <h2>Current Inventory</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>SKU</th>
+        <th>Item</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ item.sku }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.category.name }}</td>
+        <td>${{ item.unit_price }}</td>
+        <td>{{ item.quantity_in_stock }}</td>
+        <td>{% if item.is_active %}Active{% else %}Hidden{% endif %}</td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="6">No inventory items exist yet.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}
