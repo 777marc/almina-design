@@ -1,4 +1,4 @@
-# Regiment Relics (Django Store)
+# Almina Design Co. (Django Store)
 
 A Django store application for military memorabilia with an authenticated admin inventory workflow.
 

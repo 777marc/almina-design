@@ -22,7 +22,7 @@ def storefront(request):
 		'items': items,
 		'categories': categories,
 		'active_category': active_category,
-		'page_title': 'Storefront | Regiment Relics',
+		'page_title': 'Storefront | Almina Design Co.',
 	}
 	return render(request, 'store/storefront.html', context)
 
@@ -31,7 +31,7 @@ def item_detail(request, slug):
 	item = get_object_or_404(MemorabiliaItem, slug=slug, is_active=True)
 	return render(request, 'store/item_detail.html', {
 		'item': item,
-		'page_title': f'{item.name} | Regiment Relics',
+		'page_title': f'{item.name} | Almina Design Co.',
 	})
 
 
@@ -50,7 +50,7 @@ def cart_detail(request):
 	return render(request, 'store/cart.html', {
 		'cart_items': cart_items,
 		'cart_total': cart_total,
-		'page_title': 'Cart | Regiment Relics',
+		'page_title': 'Cart | Almina Design Co.',
 	})
 
 
@@ -118,7 +118,7 @@ def checkout(request):
 		'form': form,
 		'cart_items': cart_items,
 		'cart_total': cart_total,
-		'page_title': 'Checkout | Regiment Relics',
+		'page_title': 'Checkout | Almina Design Co.',
 	})
 
 
@@ -126,7 +126,7 @@ def order_confirmation(request, pk):
 	order = get_object_or_404(Order, pk=pk)
 	return render(request, 'store/order_confirmation.html', {
 		'order': order,
-		'page_title': f'Order #{order.pk} Confirmed | Regiment Relics',
+		'page_title': f'Order #{order.pk} Confirmed | Almina Design Co.',
 	})
 
 
@@ -138,6 +138,6 @@ def inventory_dashboard(request):
 	context = {
 		'items': items,
 		'low_stock': low_stock,
-		'page_title': 'Inventory Dashboard | Regiment Relics',
+		'page_title': 'Inventory Dashboard | Almina Design Co.',
 	}
 	return render(request, 'store/inventory_dashboard.html', context)
