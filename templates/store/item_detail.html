@@ -1,41 +1,34 @@
 {% extends "base.html" %} {% block content %}
-<div class="panel" style="max-width: 750px">
-  {% if item.image %}
-  <img
-    src="{{ item.image.url }}"
-    alt="{{ item.name }}"
-    style="max-width: 100%; border-radius: 8px; margin-bottom: 1rem"
-  />
-  {% else %}
-  <div
-    class="item-img-placeholder"
-    style="height: 200px; border-radius: 8px; margin-bottom: 1rem"
-  ></div>
-  {% endif %}
-  <div class="tag">{{ item.category.name }}</div>
-  <h1 style="margin-top: 0.5rem; margin-bottom: 0.25rem">{{ item.name }}</h1>
-  <p style="color: var(--muted); margin: 0 0 0.75rem">SKU: {{ item.sku }}</p>
-  <p>{{ item.description }}</p>
-  {% if item.era %}
-  <p><strong>Era:</strong> {{ item.era }}</p>
-  {% endif %} {% if item.condition %}
-  <p><strong>Condition:</strong> {{ item.condition }}</p>
-  {% endif %}
-  <p class="price" style="font-size: 1.4rem; margin: 0.75rem 0">
-    ${{ item.unit_price }}
-  </p>
-  <p><strong>In stock:</strong> {{ item.quantity_in_stock }}</p>
-  {% if item.quantity_in_stock > 0 %}
-  <form method="post" action="{% url 'add_to_cart' item.pk %}">
-    {% csrf_token %}
-    <input type="hidden" name="next" value="{{ item.get_absolute_url }}" />
-    <button type="submit" style="max-width: 220px; margin-top: 0.5rem">
-      Add to Cart
-    </button>
-  </form>
-  {% else %}
-  <p class="warning">Out of Stock</p>
-  {% endif %}
-</div>
-<p style="margin-top: 1rem"><a href="/">&larr; Back to Catalog</a></p>
+<section class="detail-layout">
+  <div class="panel">
+    {% if item.image %}
+    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="item-img" />
+    {% else %}
+    <div class="item-img-placeholder"></div>
+    {% endif %}
+  </div>
+  <div class="panel stack">
+    <div class="tag">{{ item.category.name }}</div>
+    <h1>{{ item.name }}</h1>
+    <p class="muted">SKU: {{ item.sku }}</p>
+    <p>{{ item.description }}</p>
+    {% if item.era %}
+    <p><strong>Era:</strong> {{ item.era }}</p>
+    {% endif %} {% if item.condition %}
+    <p><strong>Condition:</strong> {{ item.condition }}</p>
+    {% endif %}
+    <p class="price">${{ item.unit_price }}</p>
+    <p><strong>In stock:</strong> {{ item.quantity_in_stock }}</p>
+    {% if item.quantity_in_stock > 0 %}
+    <form method="post" action="{% url 'add_to_cart' item.pk %}">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ item.get_absolute_url }}" />
+      <button type="submit">Add to Cart</button>
+    </form>
+    {% else %}
+    <p class="warning">Out of Stock</p>
+    {% endif %}
+    <p><a href="/">&larr; Back to Catalog</a></p>
+  </div>
+</section>
 {% endblock %}

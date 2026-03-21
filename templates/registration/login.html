@@ -1,6 +1,10 @@
 {% extends "base.html" %} {% block content %}
-<h1>Staff Login</h1>
-<p>Sign in with an authorized staff account to access inventory management.</p>
+<section class="hero" style="margin-bottom: 1rem">
+  <h1>Staff Login</h1>
+  <p>
+    Sign in with an authorized staff account to access inventory management.
+  </p>
+</section>
 
 <form method="post" class="auth-form">
   {% csrf_token %} {{ form.as_p }}

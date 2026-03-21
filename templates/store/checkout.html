@@ -1,31 +1,16 @@
 {% extends "base.html" %} {% block content %}
 <h1>Checkout</h1>
-<div
-  style="
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-    align-items: start;
-  "
->
+<div class="split-layout">
   <section>
     <h2>Your Details</h2>
-    <form
-      method="post"
-      style="
-        background: var(--paper);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 1rem;
-      "
-    >
+    <form method="post" class="panel">
       {% csrf_token %} {% for field in form %}
       <div style="margin-bottom: 0.75rem">
         <label style="display: block; font-weight: 600; margin-bottom: 0.25rem"
           >{{ field.label }}</label
         >
         {{ field }} {% if field.errors %}
-        <p style="color: #8b2f1f; font-size: 0.85rem; margin-top: 0.2rem">
+        <p style="color: var(--danger); font-size: 0.85rem; margin-top: 0.2rem">
           {{ field.errors.0 }}
         </p>
         {% endif %}

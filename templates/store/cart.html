@@ -27,17 +27,7 @@
             action="{% url 'remove_from_cart' entry.item.pk %}"
           >
             {% csrf_token %}
-            <button
-              type="submit"
-              style="
-                background: #8b2f1f;
-                padding: 0.3rem 0.7rem;
-                font-size: 0.85rem;
-                width: auto;
-              "
-            >
-              Remove
-            </button>
+            <button type="submit" class="btn-remove">Remove</button>
           </form>
         </td>
       </tr>
@@ -55,20 +45,8 @@
     Total: ${{ cart_total }}
   </p>
 </section>
-<div style="display: flex; gap: 1rem; align-items: center">
-  <a
-    href="/checkout/"
-    style="
-      display: inline-block;
-      background: var(--accent);
-      color: #fff;
-      padding: 0.65rem 1.25rem;
-      border-radius: 6px;
-      font-weight: 700;
-      text-decoration: none;
-    "
-    >Proceed to Checkout</a
-  >
+<div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap">
+  <a href="/checkout/" class="btn-link">Proceed to Checkout</a>
   <a href="/">Continue Shopping</a>
 </div>
 {% else %}

@@ -1,6 +1,11 @@
 {% extends "base.html" %} {% block content %}
-<h1>Military Memorabilia Catalog</h1>
-<p>Browse collectible patches, medals, uniforms, and historic field gear.</p>
+<section class="hero">
+  <h1>Military Memorabilia Catalog</h1>
+  <p>
+    Explore authenticated relics, archive-grade patches, and collectible field
+    gear curated for serious collectors.
+  </p>
+</section>
 
 <div class="filter-bar">
   <a href="/" class="tag {% if not active_category %}tag-active{% endif %}"
@@ -24,20 +29,10 @@
     <div class="item-img-placeholder"></div>
     {% endif %}
     <div class="tag">{{ item.category.name }}</div>
-    <h3 style="margin: 0.4rem 0 0.3rem">
-      <a
-        href="{{ item.get_absolute_url }}"
-        style="color: inherit; text-decoration: none"
-        >{{ item.name }}</a
-      >
-    </h3>
-    <p style="margin: 0 0 0.4rem; font-size: 0.9rem">
-      {{ item.description|truncatewords:16 }}
-    </p>
+    <h3><a href="{{ item.get_absolute_url }}">{{ item.name }}</a></h3>
+    <p>{{ item.description|truncatewords:16 }}</p>
     {% if item.era %}
-    <p style="margin: 0; font-size: 0.85rem">
-      <strong>Era:</strong> {{ item.era }}
-    </p>
+    <p class="muted"><strong>Era:</strong> {{ item.era }}</p>
     {% endif %}
     <p class="price">${{ item.unit_price }}</p>
     <div class="card-actions">
