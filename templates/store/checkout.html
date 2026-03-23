@@ -1,5 +1,8 @@
 {% extends "base.html" %} {% block content %}
 <h1>Checkout</h1>
+{% if stripe_error %}
+<p class="warning">{{ stripe_error }}</p>
+{% endif %}
 <div class="split-layout">
   <section>
     <h2>Your Details</h2>
@@ -16,7 +19,7 @@
         {% endif %}
       </div>
       {% endfor %}
-      <button type="submit" style="margin-top: 0.5rem">Place Order</button>
+      <button type="submit" style="margin-top: 0.5rem">Pay With Stripe</button>
     </form>
   </section>
   <section class="panel">
@@ -37,7 +40,7 @@
           <td>${{ entry.subtotal }}</td>
         </tr>
         {% endfor %}
-        <tr style="border-top: 2px solid var(--border)">
+        <tr style="border-top: 2px solid var(--line)">
           <td colspan="2" style="text-align: right; font-weight: 700">Total</td>
           <td style="font-weight: 700">${{ cart_total }}</td>
         </tr>

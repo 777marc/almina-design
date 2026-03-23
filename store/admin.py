@@ -36,9 +36,9 @@ class OrderItemInline(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-	list_display = ('id', 'full_name', 'email', 'status', 'created_at')
-	list_filter = ('status', 'created_at')
+	list_display = ('id', 'full_name', 'email', 'status', 'payment_status', 'created_at')
+	list_filter = ('status', 'payment_status', 'created_at')
 	search_fields = ('full_name', 'email')
 	list_editable = ('status',)
 	inlines = [OrderItemInline]
-	readonly_fields = ('created_at',)
+	readonly_fields = ('created_at', 'paid_at', 'stripe_session_id', 'stripe_payment_intent_id')

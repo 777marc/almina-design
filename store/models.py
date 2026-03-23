@@ -53,10 +53,20 @@ class Order(models.Model):
 		('shipped', 'Shipped'),
 		('cancelled', 'Cancelled'),
 	]
+	PAYMENT_STATUS_CHOICES = [
+		('unpaid', 'Unpaid'),
+		('paid', 'Paid'),
+		('failed', 'Failed'),
+		('refunded', 'Refunded'),
+	]
 	full_name = models.CharField(max_length=200)
 	email = models.EmailField()
 	address = models.TextField()
 	status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+	payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='unpaid')
+	stripe_session_id = models.CharField(max_length=255, blank=True)
+	stripe_payment_intent_id = models.CharField(max_length=255, blank=True)
+	paid_at = models.DateTimeField(blank=True, null=True)
 	created_at = models.DateTimeField(auto_now_add=True)
 
 	class Meta:
