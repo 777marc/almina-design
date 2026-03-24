@@ -14,6 +14,7 @@ A modern Django store application for military memorabilia featuring Stripe Chec
 **Payments**
 
 - Stripe Checkout Session integration for secure card processing.
+- EasyPost USPS live rate quote during checkout.
 - Webhook-based payment confirmation (no polling).
 - Order payment tracking (unpaid, paid, failed, refunded).
 - Automatic inventory decrement on successful payment.
@@ -66,8 +67,27 @@ STRIPE_PUBLISHABLE_KEY=pk_test_...
 STRIPE_SECRET_KEY=sk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_test_...  (from Stripe CLI, see below)
 
+# Stripe Configuration
+STRIPE_CURRENCY=usd
+
 # Site
 SITE_URL=http://127.0.0.1:8000
+
+# EasyPost (USPS shipping rates)
+EASYPOST_API_KEY=EZAK_test_...
+EASYPOST_ORIGIN_NAME=Almina Design Co.
+EASYPOST_ORIGIN_STREET1=123 Warehouse St
+EASYPOST_ORIGIN_STREET2=
+EASYPOST_ORIGIN_CITY=Norfolk
+EASYPOST_ORIGIN_STATE=VA
+EASYPOST_ORIGIN_ZIP=23510
+EASYPOST_ORIGIN_COUNTRY=US
+
+# Default parcel used for quotes
+EASYPOST_PARCEL_LENGTH_IN=10
+EASYPOST_PARCEL_WIDTH_IN=8
+EASYPOST_PARCEL_HEIGHT_IN=2
+EASYPOST_PARCEL_WEIGHT_OZ=16
 ```
 
 **Important:** `.env` is git-ignored; never commit API keys.
@@ -299,6 +319,7 @@ See `requirements.txt`:
 - **Django 6.0.3** — Web framework
 - **Pillow** — Image processing
 - **stripe** — Stripe API client
+- **easypost** — EasyPost API client for USPS shipping rates
 - **python-dotenv** — Environment variable management
 
 ## Development Notes

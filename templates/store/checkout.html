@@ -2,6 +2,8 @@
 <h1>Checkout</h1>
 {% if stripe_error %}
 <p class="warning">{{ stripe_error }}</p>
+{% endif %} {% if shipping_error %}
+<p class="warning">{{ shipping_error }}</p>
 {% endif %}
 <div class="split-layout">
   <section>
@@ -58,8 +60,20 @@
         </tr>
         {% endfor %}
         <tr style="border-top: 2px solid var(--line)">
-          <td colspan="2" style="text-align: right; font-weight: 700">Total</td>
+          <td colspan="2" style="text-align: right; font-weight: 700">Items</td>
           <td style="font-weight: 700">${{ cart_total }}</td>
+        </tr>
+        <tr>
+          <td colspan="2" style="text-align: right; font-weight: 700">
+            USPS Shipping
+          </td>
+          <td style="font-weight: 700">${{ shipping_total }}</td>
+        </tr>
+        <tr style="border-top: 2px solid var(--line)">
+          <td colspan="2" style="text-align: right; font-weight: 700">
+            Order Total
+          </td>
+          <td style="font-weight: 700">${{ order_total }}</td>
         </tr>
       </tbody>
     </table>

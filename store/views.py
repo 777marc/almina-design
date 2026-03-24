@@ -12,6 +12,7 @@ from django.views.decorators.http import require_POST
 
 from .forms import CheckoutForm
 from .models import Category, MemorabiliaItem, Order, OrderItem
+from .shipping import ShippingQuoteError, get_usps_shipping_quote
 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -100,12 +101,16 @@ def checkout(request):
 	if not cart:
 		return redirect('storefront')
 	cart_items, cart_total = _get_cart_entries(cart)
+	shipping_total = Decimal('0.00')
+	order_total = cart_total
 	if request.method == 'POST':
 		if not settings.STRIPE_SECRET_KEY:
 			return render(request, 'store/checkout.html', {
 				'form': CheckoutForm(request.POST),
 				'cart_items': cart_items,
 				'cart_total': cart_total,
+				'shipping_total': shipping_total,
+				'order_total': order_total,
 				'page_title': 'Checkout | Almina Design Co.',
 				'stripe_error': 'Stripe is not configured. Set STRIPE_SECRET_KEY to continue.',
 			})
@@ -113,10 +118,47 @@ def checkout(request):
 		if form.is_valid():
 			if not cart_items:
 				return redirect('cart_detail')
+
+			to_address = {
+				'name': form.cleaned_data['full_name'],
+				'street1': form.cleaned_data['address_line1'],
+				'street2': form.cleaned_data['address_line2'],
+				'city': form.cleaned_data['city'],
+				'state': form.cleaned_data['state'],
+				'zip': form.cleaned_data['postal_code'],
+				'country': form.cleaned_data['country'],
+			}
+
+			try:
+				shipping_quote = get_usps_shipping_quote(to_address)
+			except ShippingQuoteError as exc:
+				return render(request, 'store/checkout.html', {
+					'form': form,
+					'cart_items': cart_items,
+					'cart_total': cart_total,
+					'shipping_total': shipping_total,
+					'order_total': order_total,
+					'page_title': 'Checkout | Almina Design Co.',
+					'shipping_error': str(exc),
+				})
+
+			shipping_total = shipping_quote['amount']
+			order_total = cart_total + shipping_total
+			address_lines = [
+				form.cleaned_data['address_line1'],
+				form.cleaned_data['address_line2'],
+				f"{form.cleaned_data['city']}, {form.cleaned_data['state']} {form.cleaned_data['postal_code']}",
+				form.cleaned_data['country'],
+			]
+			full_address = '\n'.join(line for line in address_lines if line)
+
 			order = Order.objects.create(
 				full_name=form.cleaned_data['full_name'],
 				email=form.cleaned_data['email'],
-				address=form.cleaned_data['address'],
+				address=full_address,
+				shipping_carrier=shipping_quote['carrier'],
+				shipping_service=shipping_quote['service'],
+				shipping_amount=shipping_total,
 			)
 			for entry in cart_items:
 				OrderItem.objects.create(
@@ -140,6 +182,17 @@ def checkout(request):
 					'quantity': entry['quantity'],
 				})
 
+			line_items.append({
+				'price_data': {
+					'currency': settings.STRIPE_CURRENCY,
+					'product_data': {
+						'name': f"Shipping ({shipping_quote['carrier']} {shipping_quote['service']})",
+					},
+					'unit_amount': int(shipping_total * 100),
+				},
+				'quantity': 1,
+			})
+
 			try:
 				session = stripe.checkout.Session.create(
 					mode='payment',
@@ -157,6 +210,8 @@ def checkout(request):
 					'form': form,
 					'cart_items': cart_items,
 					'cart_total': cart_total,
+					'shipping_total': shipping_total,
+					'order_total': order_total,
 					'page_title': 'Checkout | Almina Design Co.',
 					'stripe_error': 'Unable to start Stripe checkout right now. Please try again.',
 				})
@@ -169,6 +224,8 @@ def checkout(request):
 		'form': form,
 		'cart_items': cart_items,
 		'cart_total': cart_total,
+		'shipping_total': shipping_total,
+		'order_total': order_total,
 		'page_title': 'Checkout | Almina Design Co.',
 	})
 

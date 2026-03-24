@@ -27,6 +27,10 @@
       {% endfor %}
     </tbody>
   </table>
+  <p style="margin-top: 0.75rem">
+    Shipping: <strong>${{ order.shipping_amount }}</strong>
+    ({{ order.shipping_carrier }} {{ order.shipping_service }})
+  </p>
   <p style="font-weight: 700; font-size: 1.1rem; margin-top: 0.75rem">
     Order Total: ${{ order.get_total }}
   </p>

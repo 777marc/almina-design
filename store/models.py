@@ -64,6 +64,9 @@ class Order(models.Model):
 	address = models.TextField()
 	status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 	payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='unpaid')
+	shipping_carrier = models.CharField(max_length=80, blank=True)
+	shipping_service = models.CharField(max_length=120, blank=True)
+	shipping_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 	stripe_session_id = models.CharField(max_length=255, blank=True)
 	stripe_payment_intent_id = models.CharField(max_length=255, blank=True)
 	paid_at = models.DateTimeField(blank=True, null=True)
@@ -76,7 +79,7 @@ class Order(models.Model):
 		return f'Order #{self.pk} – {self.full_name}'
 
 	def get_total(self):
-		return sum(line.get_subtotal() for line in self.items.all())
+		return sum(line.get_subtotal() for line in self.items.all()) + self.shipping_amount
 
 
 class OrderItem(models.Model):
