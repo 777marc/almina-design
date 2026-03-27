@@ -1,0 +1,9 @@
+{
+  "AlminaDesignLightsailStack": {
+    "InstanceName": "almina-design",
+    "RepoBranch": "main",
+    "DomainName": "alminadesignco.com",
+    "SiteUrl": "https://alminadesignco.com",
+    "StaticIpAddress": "32.194.58.28"
+  }
+}

@@ -321,6 +321,7 @@ See `requirements.txt`:
 - **stripe** — Stripe API client
 - **easypost** — EasyPost API client for USPS shipping rates
 - **python-dotenv** — Environment variable management
+- **gunicorn** — Production WSGI server for Lightsail deployment
 
 ## Development Notes
 
@@ -336,11 +337,55 @@ For production deployment:
 
 - [ ] Set `DEBUG=False` in `.env`
 - [ ] Update `SECRET_KEY` to a strong random value
-- [ ] Set `ALLOWED_HOSTS` in `settings.py`
-- [ ] Use PostgreSQL instead of SQLite
+- [ ] Set `ALLOWED_HOSTS` in `.env`
+- [ ] Decide whether SQLite on one instance is sufficient or whether you need PostgreSQL
 - [ ] Configure HTTPS/SSL
 - [ ] Set Stripe production keys (not test keys)
 - [ ] Update `SITE_URL` to production domain
 - [ ] Run `python manage.py collectstatic`
 - [ ] Use a production-grade WSGI server (Gunicorn, uWSGI)
 - [ ] Configure environment variables on hosting platform
+
+## AWS Lightsail With CDK
+
+This repository now includes a ready-to-run CDK app in [infra/lightsail-cdk/README.md](c:/github/PYTHON/almina-design/infra/lightsail-cdk/README.md) for provisioning a Lightsail instance and bootstrapping Django automatically.
+
+### What the Lightsail setup does
+
+- Creates a Lightsail Ubuntu instance
+- Allocates and attaches a static IP
+- Opens ports `22`, `80`, and `443`
+- Installs Python, Nginx, and Gunicorn on first boot
+- Clones the repo, runs migrations, and collects static files
+- Creates `/opt/almina-design/shared/.env` if it does not exist
+- Starts the site with `systemd` behind Nginx
+
+### Deploy
+
+```powershell
+cd infra/lightsail-cdk
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+cdk bootstrap
+cdk deploy -c repoUrl=https://github.com/your-user/almina-design.git -c branch=main -c availabilityZone=us-east-1a
+```
+
+### Optional deploy flags
+
+- `-c keyPairName=my-lightsail-key`
+- `-c domainName=store.example.com`
+- `-c certificateEmail=you@example.com`
+- `-c bundleId=small_3_0`
+
+### Runtime paths on the instance
+
+- App checkout: `/opt/almina-design/current`
+- Shared env file: `/opt/almina-design/shared/.env`
+- Virtualenv: `/opt/almina-design/.venv`
+
+After editing `/opt/almina-design/shared/.env`, restart the app:
+
+```bash
+sudo systemctl restart almina-design
+```
