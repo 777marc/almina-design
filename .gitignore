@@ -20,9 +20,6 @@ media/
 .vscode/
 .idea/
 
-# CDK
-cdk.out/
-
 # Environment
 .env
 .env.local

@@ -3,4 +3,3 @@ Pillow
 stripe
 python-dotenv
 easypost
-gunicorn

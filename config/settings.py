@@ -20,18 +20,6 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-def env_bool(name, default=False):
-	value = os.getenv(name)
-	if value is None:
-		return default
-	return value.lower() in {'1', 'true', 'yes', 'on'}
-
-
-def env_list(name, default=''):
-	value = os.getenv(name, default)
-	return [item.strip() for item in value.split(',') if item.strip()]
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -39,10 +27,9 @@ def env_list(name, default=''):
 SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-k(ltbee1nfifkr-+l7_2wf#gsr1p8j2=wt+@ebwiw71%0o6^+s')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env_bool('DEBUG', default=True)
+DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = env_list('ALLOWED_HOSTS', '127.0.0.1,localhost')
-CSRF_TRUSTED_ORIGINS = env_list('CSRF_TRUSTED_ORIGINS')
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -91,26 +78,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-database_engine = os.getenv('DATABASE_ENGINE', 'django.db.backends.sqlite3')
-
-if database_engine == 'django.db.backends.sqlite3':
-    DATABASES = {
-        'default': {
-            'ENGINE': database_engine,
-            'NAME': os.getenv('DATABASE_NAME', BASE_DIR / 'db.sqlite3'),
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': database_engine,
-            'NAME': os.getenv('DATABASE_NAME', ''),
-            'USER': os.getenv('DATABASE_USER', ''),
-            'PASSWORD': os.getenv('DATABASE_PASSWORD', ''),
-            'HOST': os.getenv('DATABASE_HOST', ''),
-            'PORT': os.getenv('DATABASE_PORT', ''),
-        }
-    }
+}
 
 
 # Password validation
@@ -147,16 +120,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-MEDIA_URL = '/media/'
+STATIC_URL = 'static/'
+MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-USE_X_FORWARDED_HOST = env_bool('USE_X_FORWARDED_HOST', default=True)
-SECURE_SSL_REDIRECT = env_bool('SECURE_SSL_REDIRECT', default=False)
-SESSION_COOKIE_SECURE = env_bool('SESSION_COOKIE_SECURE', default=False)
-CSRF_COOKIE_SECURE = env_bool('CSRF_COOKIE_SECURE', default=False)
 
 LOGIN_REDIRECT_URL = '/inventory/'
 LOGOUT_REDIRECT_URL = '/'
