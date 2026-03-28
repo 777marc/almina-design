@@ -116,6 +116,47 @@ stripe listen --forward-to localhost:8000/payments/stripe/webhook/
 
 Visit http://127.0.0.1:8000 to see the storefront.
 
+## Run With Docker
+
+### 1. Create Environment File
+
+```bash
+cp .env.example .env
+```
+
+Populate `.env` with your Stripe and EasyPost keys.
+
+### 2. Build and Start Containers
+
+```bash
+docker-compose up --build
+```
+
+The app will be available at http://127.0.0.1:8000.
+
+### 3. Common Docker Commands
+
+```bash
+# Start in detached mode
+docker-compose up -d
+
+# Stop services
+docker-compose down
+
+# Rebuild image after dependency changes
+docker-compose up --build
+
+# Run Django management commands
+docker-compose exec web python manage.py createsuperuser
+docker-compose exec web python manage.py loaddata store/fixtures/sample_inventory.json
+```
+
+### Docker Notes
+
+- The container runs migrations automatically on startup.
+- Source code is bind-mounted, so template and Python changes reload during development.
+- SQLite data is stored in your project folder as `db.sqlite3`.
+
 ## Routes & Pages
 
 ### Customer Pages

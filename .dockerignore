@@ -1,0 +1,30 @@
+# VCS
+.git
+.gitignore
+
+# Python cache/artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+
+# Local environment and IDE
+.env
+.env.local
+.vscode/
+.idea/
+
+# Local runtime data
+db.sqlite3
+media/
+staticfiles/
+
+# OS files
+.DS_Store
+Thumbs.db
