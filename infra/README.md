@@ -15,10 +15,10 @@ This CDK project provisions:
 
 ### Fargate Stack
 
-- VPC with public/private subnets across 2 AZs
+- VPC with public and private subnets across 2 AZs
 - ECS cluster
-- Fargate service (256 CPU, 512 MB memory, 1 task)
-- Application Load Balancer with health checks
+- Fargate service in private subnets only (256 CPU, 512 MB memory, 1 task)
+- Public Application Load Balancer with health checks
 - CloudWatch Logs group (7-day retention)
 
 ## Prerequisites
@@ -37,7 +37,8 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 cdk bootstrap
-cdk deploy
+cdk deploy AlminaInfraStack
+cdk deploy AlminaFargateStack
 ```
 
 When prompted, approve both stacks. Wait for CloudFormation to finish (~5–10 minutes).

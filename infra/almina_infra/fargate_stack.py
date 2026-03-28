@@ -4,18 +4,26 @@ from aws_cdk import (
     RemovalPolicy,
     Stack,
     aws_ec2 as ec2,
+    aws_ecr as ecr,
     aws_ecs as ecs,
     aws_ecs_patterns as ecs_patterns,
+    aws_iam as iam,
     aws_logs as logs,
 )
 from constructs import Construct
 
 
 class AlminaFargateStack(Stack):
-    def __init__(self, scope: Construct, construct_id: str, repo_uri: str, **kwargs) -> None:
+    def __init__(
+        self,
+        scope: Construct,
+        construct_id: str,
+        repository: ecr.IRepository,
+        **kwargs,
+    ) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        # VPC
+        # Create a dedicated VPC with public and private subnets.
         vpc = ec2.Vpc(
             self,
             "AlminaVpc",
@@ -44,15 +52,28 @@ class AlminaFargateStack(Stack):
             cpu=256,
             desired_count=1,
             public_load_balancer=True,
+            task_subnets=ec2.SubnetSelection(subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS),
+            assign_public_ip=False,
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
-                image=ecs.ContainerImage.from_registry(repo_uri),
+                image=ecs.ContainerImage.from_ecr_repository(repository, tag="latest"),
                 container_port=8000,
+                environment={
+                    "ALLOWED_HOSTS": "*",
+                },
                 log_driver=ecs.LogDriver.aws_logs(
                     log_group=log_group,
                     stream_prefix="almina-design",
                 ),
             ),
             load_balancer_name="almina-alb",
+        )
+
+        repository.grant_pull(fargate_service.task_definition.execution_role)
+        fargate_service.task_definition.add_to_execution_role_policy(
+            iam.PolicyStatement(
+                actions=["ecr:GetAuthorizationToken"],
+                resources=["*"],
+            )
         )
 
         # Health check

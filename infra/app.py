@@ -14,14 +14,14 @@ env = cdk.Environment(
     region=os.getenv("CDK_DEFAULT_REGION"),
 )
 
-# ECR Repository
+# ECR repository stack
 infra_stack = AlminaInfraStack(app, "AlminaInfraStack", env=env)
 
-# Fargate Service (requires ECR repo URI)
+# Fargate service stack
 fargate_stack = AlminaFargateStack(
     app,
     "AlminaFargateStack",
-    repo_uri=infra_stack.repo_uri,
+    repository=infra_stack.repo,
     env=env,
 )
 fargate_stack.add_dependency(infra_stack)

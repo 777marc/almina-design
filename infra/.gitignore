@@ -8,4 +8,5 @@ venv/
 
 # CDK
 cdk.out/
+cdk.context.json
 *.tmp

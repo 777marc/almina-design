@@ -16,6 +16,7 @@ class AlminaInfraStack(Stack):
             removal_policy=RemovalPolicy.RETAIN,
         )
 
+        self.repo = repo
         self.repo_uri = repo.repository_uri
 
         CfnOutput(self, "RepositoryName", value=repo.repository_name)
